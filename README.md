@@ -20,7 +20,7 @@ duckdb imdb.duckdb
 ```sql
 .read raw_import.sql
 
-.read denormalize.sql
+.read movies.sql
 
 select count(*) cnt from movies;
 ```

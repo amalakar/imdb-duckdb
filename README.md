@@ -18,59 +18,63 @@ duckdb imdb.duckdb
 
 3. Run the sql files within duckdb
 ```sql
-.read duckdb.import.sql
+.read raw_import.sql
 
 .read denormalize.sql
 
 select count(*) cnt from movies;
 ```
 
-### name_basics
+## Data Model / Sample
+### Denormalized Tables
+#### movies
 
-|  nconst   | primary_name  | birth_year | death_year |           primary_profession           |               known_for_titles               |
-|-----------|---------------|-----------:|-----------:|----------------------------------------|----------------------------------------------|
-| nm0000001 | Fred Astaire  | 1899       | 1987       | [actor, miscellaneous, producer]       | [tt0072308, tt0050419, tt0053137, tt0027125] |
-| nm0000002 | Lauren Bacall | 1924       | 2014       | [actress, soundtrack, archive_footage] | [tt0037382, tt0075213, tt0117057, tt0038355] |
+|     id     |                  url                  | title_type | primary_title  | original_title | is_adult | start_year | end_year | runtime_minutes |           genres           | average_rating | num_votes |                                                                          actors                                                                          |     directors      |                           producers                           | writers |
+|------------|---------------------------------------|------------|----------------|----------------|---------:|------------|----------|-----------------|----------------------------|---------------:|----------:|----------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------|---------------------------------------------------------------|---------|
+| tt15239678 | https://www.imdb.com/title/tt15239678 | movie      | Dune: Part Two | Dune: Part Two | false    | 2024       |          | 166             | [Action, Adventure, Drama] | 8.6            | 464587    | [Timothée Chalamet, Zendaya, Rebecca Ferguson, Josh Brolin, Austin Butler, Dave Bautista, Christopher Walken, Léa Seydoux, Javier Bardem, Florence Pugh] | [Denis Villeneuve] | [Patrick McCormick, Mary Parent, Cale Boyter, Tanya Lapointe] |         |
 
-### title_akas
+### Raw IMDB tables
+#### name_basics
 
-|  titleId  | ordering |   title    | region | language |  types   |  attributes   | is_original_title |
-|-----------|---------:|------------|--------|----------|----------|---------------|------------------:|
-| tt0000001 | 1        | Carmencita |        |          | original |               | true              |
-| tt0000001 | 2        | Carmencita | DE     |          |          | literal title | false             |
+| nid       |   primary_name   | birth_year | death_year |      primary_profession      |               known_for_titles               |
+|-----------|------------------|-----------:|------------|------------------------------|----------------------------------------------|
+| nm0898288 | Denis Villeneuve | 1967       |            | [director, writer, producer] | [tt1160419, tt1856101, tt1255953, tt2543164] |
 
+#### title_akas
 
-### title_basics
-|  tconst   | title_type |     primary_title      |     original_title     | is_adult | start_year | end_year | runtime_minutes |        genres        |
-|-----------|------------|------------------------|------------------------|---------:|------------|----------|-----------------|----------------------|
-| tt0000001 | short      | Carmencita             | Carmencita             | false    | 1894       |          | 1               | [Documentary, Short] |
-| tt0000002 | short      | Le clown et ses chiens | Le clown et ses chiens | false    | 1892       |          | 5               | [Animation, Short]   |
+|  id  | ordering |     title      | region | language |    types    | attributes | is_original_title |
+|------|---------:|----------------|--------|----------|-------------|------------|------------------:|
+| tt15239678 | 1        | Dune: Part Two |        |          | original    |            | true              |
+| tt15239678 | 10       | Dune: Part Two | SE     |          | imdbDisplay |            | false             |
 
+#### title_basics
+|     id     | type  | primary_title  | original_title | is_adult | start_year | end_year | runtime_minutes |           genres           |
+|------------|-------|----------------|----------------|---------:|------------|----------|-----------------|----------------------------|
+| tt15239678 | movie | Dune: Part Two | Dune: Part Two | false    | 2024       |          | 166             | [Action, Adventure, Drama] |
 
-### title_crew
+#### title_crew
 
-|  tconst   |  directors  | writers |
-|-----------|-------------|---------|
-| tt0000001 | [nm0005690] |         |
-| tt0000002 | [nm0721526] |         |
+|     id     |  directors  |              writers              |
+|------------|-------------|-----------------------------------|
+| tt15239678 | [nm0898288] | [nm0898288, nm3123612, nm0378541] |
 
-### title_episode
+#### title_episode
 
-|  tconst   | parent_tconst | season_number | episode_number |
+|    id     | parent_tconst | season_number | episode_number |
 |-----------|---------------|---------------|----------------|
 | tt0041951 | tt0041038     | 1             | 9              |
 | tt0042816 | tt0989125     | 1             | 17             |
 
 ### title_principals
 
-|  tconst   | ordering |  nconst   | category | job | characters |
-|-----------|---------:|-----------|----------|-----|------------|
-| tt0000001 | 1        | nm1588970 | self     |     | [Self]     |
-| tt0000001 | 2        | nm0005690 | director |     |            |
+|     id     |    nid    | ordering |      category       |           job           |      characters       |
+|------------|-----------|---------:|---------------------|-------------------------|-----------------------|
+| tt15239678 | nm3154303 | 1        | actor               |                         | [Paul Atreides]       |
+| tt15239678 | nm3918035 | 2        | actress             |                         | [Chani]               |
+| tt15239678 | nm0272581 | 3        | actress             |                         | [Jessica]             |
 
 ### title_ratings
 
-|  tconst   | average_rating | num_votes |
-|-----------|---------------:|----------:|
-| tt0000001 | 5.7            | 2062      |
-| tt0000002 | 5.6            | 279       |
+|     id     | avgerage_rating | votes  |
+|------------|----------------:|-------:|
+| tt15239678 | 8.6             | 464587 |

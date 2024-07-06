@@ -21,17 +21,17 @@ WITH persons AS (
 SELECT t.id                                        as id,
        concat('https://www.imdb.com/title/', t.id) as url,
        type,
-       primary_title,
+       start_year,
+       primary_title as title,
+       genres,
+       votes,
+       average_rating as rating,
+       directors,
+       runtime_minutes,
+       actors,
        original_title,
        is_adult,
-       start_year,
        end_year,
-       runtime_minutes,
-       genres,
-       average_rating as rating,
-       votes,
-       actors,
-       directors,
        producers,
        writers
 from title_basics t
@@ -39,10 +39,5 @@ from title_basics t
          join movie_persons p on t.id = p.id;
 
 
-COPY
-(
-SELECT *
-FROM movies)
-    TO 'movies.parquet'
-    (FORMAT 'parquet');
+-- COPY (SELECT * FROM movies) TO 'movies.parquet' (FORMAT 'parquet');
 

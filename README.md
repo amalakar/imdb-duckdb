@@ -75,6 +75,6 @@ select count(*) cnt from movies;
 
 ### title_ratings
 
-|     id     | avgerage_rating | votes  |
-|------------|----------------:|-------:|
-| tt15239678 | 8.6             | 464587 |
+|     id     | average_rating | votes  |
+|------------|---------------:|-------:|
+| tt15239678 | 8.6            | 465485 |

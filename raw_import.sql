@@ -67,7 +67,7 @@ FROM read_csv('https://datasets.imdbws.com/title.principals.tsv.gz', delim = '\t
 
 CREATE OR REPLACE TABLE title_ratings as
 SELECT tconst as id,
-       averageRating as average_Rating,
+       averageRating as average_rating,
        numVotes as votes
 FROM read_csv('https://datasets.imdbws.com/title.ratings.tsv.gz', delim = '\t', quote = NULL, nullstr = '\N', escape=NULL);
 
